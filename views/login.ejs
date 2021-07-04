@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        .container-chat {
+            display: flex;
+        }
+
+        .container-chat:first-child {
+            flex: 1;
+        }
+
+        .main-chat {
+            flex: 2;
+            height: 400px;
+            background-color: darkgray;
+        }
+
+        .main-chat .header-chat {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .main-chat .content-chat {
+            height: 80%;
+            background-color: darkseagreen;
+        }
+
+        .main-chat .footer-chat {
+            margin: 10px 20px 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <input type="text" id="inputname" placeholder="Nhập tên người dùng">
+        <input type="submit" id="btn">
+    </div>
+
+    <div class="container-chat">
+        <div>
+            <h2>User Online</h2>
+            <div class="user-online"></br>
+            </div>
+        </div>
+
+        <div class="main-chat">
+            <div class="header-chat">
+                <div class="usernamechat"></div>
+                <button>Logout</button>
+            </div>
+            <div class="content-chat">
+
+            </div>
+            <div class="footer-chat">
+                <input id ='noidung' type="text" placeholder="Nhập bình luận">
+                <input id='btnsend' type="submit">
+            </div>
+        </div>
+    </div>
+    <div class="test"></div>
+    <script>
+        var socket = io('http://localhost:3000');
+        $('.container-chat').hide();
+        socket.on('success-login', function (data) {
+            $('.login').hide(300)
+            $('.usernamechat').text($('#inputname').val())
+            $('.container-chat').show(400);
+           
+        })
+        socket.on('list-user-online', function (data) {
+            $('.user-online').html('');
+            data.forEach(element => {
+                $('.user-online').append('<div class="user">' + element + '</div>')
+            });
+        })
+        $(document).ready(() => {
+            $('#btn').click(() => {
+                socket.emit('client-send-username', $('#inputname').val())
+            })
+            $('#btnsend').click(() => {
+                socket.emit('content-chat', $('#noidung').val())
+            })
+        })
+        socket.on('serversendcontent', function(data) {
+            $('.content-chat').append('<div>' + data + '</div>')
+        })
+        $('#noidung').focusin(function(){
+            socket.emit('chatting')
+        })
+        socket.on('sendding', function() {
+            $('.test').text('ai do dang chatting')
+        })
+        $('#noidung').focusout(function() {
+            socket.emit('unchatting')
+        })
+        socket.on('unsendding', function() {
+            $('.test').text('')
+        })
+    </script>
+</body>
+
+</html>

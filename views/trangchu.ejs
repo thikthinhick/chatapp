@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mystyle.css">
+    <title>Document</title>
+    <script src="socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var socket = io('http://localhost:3000');
+        $(document).ready(function () {
+            $('#btnsend').click(function () {
+                socket.emit('send-comment', $('.input-chat input').val());
+                var value =
+                    '<li><div class="chat-answer">'
+                    + '<div class="content-chat-answer"><div class="noidung"><p>'
+                    + $('.input-chat input').val()
+                    + '</p></div><div class="time">10:08 AM | Today</div></div>'
+                    + '<div class="img-user"><img src="./image/user1.jpg" alt=""></div></div></li>'
+                $('.main-chat ul').append(value);
+                $('.input-chat input').val('');
+                updateScroll();
+            })
+        })
+        socket.on('reply-comment', (data) => {
+            var value =
+                '<li><div class="chat-reply img-chat"><img src="./image/user1.jpg" alt="">'
+                + '<div class="content-chat"><div class="noidung"><p>'
+                + data + '</p></div><div class="time">10:08 AM | Today'
+                + '</div></div></div></li>'
+            $('.main-chat ul').append(value);
+            updateScroll();
+        })
+        function updateScroll() {
+            var element = document.querySelector('.main-chat');
+            element.scrollTop = element.scrollHeight;
+        }
+    </script>
+</head>
+
+<body>
+    <section>
+        <div class="container-left">
+            <div class="header-left">
+                <div class="user">
+                    <div class="user-content">
+                        <img src="./image/user1.jpg" alt="">
+                        <div class="information">
+                            <span>Lê Văn Chương</span>
+                            <p>Người sáng lập nội dung</p>
+                        </div>
+                    </div>
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="toolbar">
+                    <i class="fas fa-comment-dots"></i>
+                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-keyboard"></i>
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="input-search">
+                    <input type="text" placeholder="Tìm kiếm">
+                </div>
+                <ul class="list-myfriend">
+                    <li>
+                        <div class="user-myfriend">
+                            <img src="./image/user1.jpg" alt="">
+                            <div class="content-user">
+                                <div>
+                                    <span>Lê Văn Chương</span>
+                                    <p>Just now</p>
+                                </div>
+                                <p>Mai có đi học ko vậy chương?</p>
+                            </div>
+                        </div>
+                        <div class="state"></div>
+                    </li>
+                    <li>
+                        <div class="user-myfriend">
+                            <img src="./image/user2.jpg" alt="">
+                            <div class="content-user">
+                                <div>
+                                    <span>Lê Thị Vân</span>
+                                    <p>Just now</p>
+                                </div>
+                                <p>Mai có đi học ko vậy chương?</p>
+                            </div>
+                        </div>
+                        <div class="state"></div>
+                    </li>
+                    <li>
+                        <div class="user-myfriend">
+                            <img src="./image/user3.jpg" alt="">
+                            <div class="content-user">
+                                <div>
+                                    <span>Lê Văn Nam</span>
+                                    <p>Just now</p>
+                                </div>
+                                <p>Mai có đi học ko vậy chương?</p>
+                            </div>
+                        </div>
+                        <div class="state"></div>
+                    </li>
+                    <li>
+                        <div class="user-myfriend">
+                            <img src="./image/user4.jpg" alt="">
+                            <div class="content-user">
+                                <div>
+                                    <span>Bùi Thị Hảo</span>
+                                    <p>3 hours</p>
+                                </div>
+                                <p>Mai có đi học ko vậy chương?</p>
+                            </div>
+                        </div>
+                        <div class="state"></div>
+                    </li>
+                    <li>
+                        <div class="user-myfriend">
+                            <img src="./image/user5.jfif" alt="">
+                            <div class="content-user">
+                                <div>
+                                    <span>Trịnh Đình Quang</span>
+                                    <p>1 hour</p>
+                                </div>
+                                <p>Mai có đi học ko vậy chương?</p>
+                            </div>
+                        </div>
+                        <div class="state"></div>
+                    </li>
+                    <li>
+                        <div class="user-myfriend">
+                            <img src="./image/user6.jfif" alt="">
+                            <div class="content-user">
+                                <div>
+                                    <span>Lê Văn Vũ</span>
+                                    <p>8 min</p>
+                                </div>
+                                <p>Mai có đi học ko vậy chương?</p>
+                            </div>
+                        </div>
+                        <div class="state"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-right">
+            <div class="header-right">
+                <div class="user">
+                    <div class="user-content">
+                        <img src="./image/user1.jpg" alt="">
+                        <div class="information">
+                            <span>Lê Văn Chương</span>
+                            <p>Đang hoạt động</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="video-call">
+                    <a href=""><i class="fas fa-phone"></i></a>
+                    <a href=""><i class="fas fa-video"></i></a>
+                    <a href=""><i class="fas fa-info-circle"></i></a>
+                </div>
+            </div>
+            <div class="main-chat">
+                <ul>
+                    <li>
+                        <div class="chat-reply img-chat">
+                            <img src="./image/user1.jpg" alt="">
+                            <div class="content-chat">
+                                <div class="noidung">
+                                    <p>What is your desired job?</p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-answer">
+                            <div class="content-chat-answer">
+                                <div class="noidung">
+                                    <p>Well, my dream changes in accordance to age. Up to now, I would like to be a
+                                        great English teacher.</p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                            <div class="img-user">
+                                <img src="./image/user1.jpg" alt="">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-reply img-chat">
+                            <img src="./image/user1.jpg" alt="">
+                            <div class="content-chat">
+                                <div class="noidung">
+                                    <p>Is that a demanding job?</p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-answer">
+                            <div class="content-chat-answer">
+                                <div class="noidung">
+                                    <p>Yes, I think so although people suppose that being a teacher is easy and boring.
+                                    </p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                            <div class="img-user">
+                                <img src="./image/user1.jpg" alt="">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-reply img-chat">
+                            <img src="./image/user1.jpg" alt="">
+                            <div class="content-chat">
+                                <div class="noidung">
+                                    <p>Is that a demanding job?</p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-answer">
+                            <div class="content-chat-answer">
+                                <div class="noidung">
+                                    <p>Yes, I think so although people suppose that being a teacher is easy and boring.
+                                    </p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                            <div class="img-user">
+                                <img src="./image/user1.jpg" alt="">
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="chat-answer">
+                            <div class="content-chat-answer">
+                                <div class="noidung">
+                                    <p>B: Every job needs time and effort, and teacher does as well. Apart from the
+                                        academic knowledge I was taught in university, I have to learn many other soft
+                                        skills. (Mỗi công việc đều cần thời gian và nỗ lực, và nghề giáo viên cũng vậy.
+                                        Bên cạnh kiến thức học tập tại trường đại học, tôi phải học nhiều kỹ năng mềm)
+                                    </p>
+                                </div>
+                                <div class="time">
+                                    10:08 AM | Today
+                                </div>
+                            </div>
+                            <div class="img-user">
+                                <img src="./image/user1.jpg" alt="">
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+            <div class="footer-chat">
+                <div class="input-chat">
+                    <input type="text" placeholder="Write a message">
+                </div>
+                <div class="toolbar-chat">
+                    <i class="fas fa-paperclip"></i>
+                    <i class="far fa-meh"></i>
+                    <i id="btnsend" class="fab fa-telegram-plane sendding"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
